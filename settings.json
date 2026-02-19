@@ -1,0 +1,135 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(*)",
+      "Read(*)",
+      "Write(*)",
+      "Edit(*)",
+      "Glob(*)",
+      "Grep(*)",
+      "WebFetch(*)",
+      "WebSearch(*)",
+      "Task(*)",
+      "NotebookEdit(*)",
+      "Skill(*)",
+      "Bash(printf:*)",
+      "Bash(powershell:*)",
+      "WebSearch",
+      "Bash(pip show:*)",
+      "Bash(findstr:*)",
+      "Bash(pip install:*)",
+      "Bash(python:*)",
+      "Bash(claude mcp list:*)",
+      "Bash(claude mcp add:*)",
+      "mcp__gmail__search_emails",
+      "mcp__gmail__read_email",
+      "mcp__perplexity__perplexity_search",
+      "mcp__brave-search__brave_web_search",
+      "mcp__tavily__tavily_search",
+      "mcp__exa__web_search_exa",
+      "mcp__firecrawl__firecrawl_search",
+      "Bash(dir:*)",
+      "Bash(ls:*)",
+      "Bash(find:*)",
+      "Bash(du:*)",
+      "Bash(reg query \"HKCU\\\\Software\" /s /f \"netease\")",
+      "Bash(reg query:*)",
+      "Bash(echo:*)",
+      "Bash(cmd.exe /c \"reg query HKCU\\\\Software\\\\Netease /s\")",
+      "Bash(cmd.exe /c \"reg delete HKCU\\\\Software\\\\Netease /f\")",
+      "Bash(reg delete:*)",
+      "Bash(cmd.exe /c 'reg delete \"\"HKCU\\\\Software\\\\Netease\"\" /f')",
+      "Bash(powershell.exe -Command \"Remove-Item -Path ''HKCU:\\\\Software\\\\Netease'' -Recurse -Force -ErrorAction SilentlyContinue; if \\(Test-Path ''HKCU:\\\\Software\\\\Netease''\\) { Write-Host ''STILL EXISTS'' } else { Write-Host ''DELETED: Registry HKCU\\\\Software\\\\Netease'' }\")",
+      "Bash(powershell.exe:*)",
+      "WebFetch(domain:github.com)",
+      "Bash(where:*)",
+      "mcp__firecrawl__firecrawl_scrape",
+      "mcp__gmail__download_attachment"
+    ],
+    "deny": [],
+    "defaultMode": "default"
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node C:/Users/armen/.claude/hooks/context-guard.js"
+          }
+        ]
+      },
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node C:/Users/armen/.claude/hooks/gemini-delegate.js"
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node C:/Users/armen/.claude/hooks/pre-compact.js"
+          }
+        ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "C:/Users/armen/bin/bd.exe sync"
+          },
+          {
+            "type": "command",
+            "command": "C:/Users/armen/bin/bd.exe prime --stealth"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "compact",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node C:/Users/armen/.claude/hooks/post-compact.js"
+          }
+        ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "C:/Users/armen/bin/bd.exe prime --stealth"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -ExecutionPolicy Bypass -File C:/Users/armen/.claude/notify.ps1"
+          }
+        ]
+      }
+    ]
+  },
+  "enabledPlugins": {},
+  "autoUpdatesChannel": "latest",
+  "statusLine": {
+    "type": "command",
+    "command": "node C:/Users/armen/.claude/statusline-command.js"
+  }
+}

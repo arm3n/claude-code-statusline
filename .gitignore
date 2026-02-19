@@ -1,0 +1,41 @@
+# Ignore everything by default
+*
+
+# Track configuration files
+!.gitignore
+!CLAUDE.md
+!settings.json
+
+# Track hooks
+!hooks/
+!hooks/*.js
+
+# Track skills
+!skills/
+!skills/*/
+!skills/**/SKILL.md
+
+# Track agents
+!agents/
+!agents/*.md
+
+# Track statusline
+!statusline-command.js
+
+# Track plans
+!plans/
+!plans/*.md
+
+# Never track these
+.credentials.json
+credentials/
+debug/
+file-history/
+cache/
+backups/
+projects/
+plugins/
+todos/
+context-pct-cache.json
+plan-usage-cache.json
+*.jsonl
