@@ -129,8 +129,10 @@ function probeRateLimits() {
 
 function formatCountdown(ms) {
   if (ms <= 0) return 'now';
-  const h = Math.floor(ms / 3600000);
+  const d = Math.floor(ms / 86400000);
+  const h = Math.floor((ms % 86400000) / 3600000);
   const m = Math.floor((ms % 3600000) / 60000);
+  if (d > 0) return `${d}d${h > 0 ? h + 'h' : ''}`;
   if (h > 0) return `${h}h${m > 0 ? m + 'm' : ''}`;
   return `${m}m`;
 }
@@ -160,7 +162,13 @@ function formatCountdown(ms) {
         out += `(${formatCountdown(remaining)})`;
       }
     }
-    if (plan.weekly7d != null) out += ` ${utilizationColor(plan.weekly7d)}7d:${Math.round(plan.weekly7d * 100)}%`;
+    if (plan.weekly7d != null) {
+      out += ` ${utilizationColor(plan.weekly7d)}7d:${Math.round(plan.weekly7d * 100)}%`;
+      if (plan.weekly7dReset) {
+        const remaining = plan.weekly7dReset * 1000 - Date.now();
+        out += `(${formatCountdown(remaining)})`;
+      }
+    }
   }
 
   out += RESET;
