@@ -111,7 +111,9 @@ function probeRateLimits() {
         const pf = (v) => { const n = parseFloat(v); return isNaN(n) ? null : n; };
         const result = {
           session5h: pf(h['anthropic-ratelimit-unified-5h-utilization']),
+          session5hReset: pf(h['anthropic-ratelimit-unified-5h-reset']),
           weekly7d: pf(h['anthropic-ratelimit-unified-7d-utilization']),
+          weekly7dReset: pf(h['anthropic-ratelimit-unified-7d-reset']),
           overage: pf(h['anthropic-ratelimit-unified-overage-utilization']),
           ts: Date.now()
         };
@@ -125,6 +127,14 @@ function probeRateLimits() {
   });
 }
 
+function formatCountdown(ms) {
+  if (ms <= 0) return 'now';
+  const h = Math.floor(ms / 3600000);
+  const m = Math.floor((ms % 3600000) / 60000);
+  if (h > 0) return `${h}h${m > 0 ? m + 'm' : ''}`;
+  return `${m}m`;
+}
+
 (async () => {
   let out = `${GREEN}${user}@${host} ${PURPLE}${process.env.MSYSTEM || ''} ${YELLOW}${cwd}`;
   if (branch) out += ` ${CYAN}(${branch})`;
@@ -135,17 +145,21 @@ function probeRateLimits() {
   const stale = !plan || !plan.ts || (Date.now() - plan.ts > CACHE_TTL_MS);
 
   if (stale) {
-    // Try a quick probe (5s timeout)
     const fresh = await probeRateLimits();
     if (fresh) {
       writeCache(fresh);
       plan = fresh;
     }
-    // If probe fails, show stale cache (better than nothing)
   }
 
   if (plan) {
-    if (plan.session5h != null) out += ` ${utilizationColor(plan.session5h)}5h:${Math.round(plan.session5h * 100)}%`;
+    if (plan.session5h != null) {
+      out += ` ${utilizationColor(plan.session5h)}5h:${Math.round(plan.session5h * 100)}%`;
+      if (plan.session5hReset) {
+        const remaining = plan.session5hReset * 1000 - Date.now();
+        out += `(${formatCountdown(remaining)})`;
+      }
+    }
     if (plan.weekly7d != null) out += ` ${utilizationColor(plan.weekly7d)}7d:${Math.round(plan.weekly7d * 100)}%`;
   }
 

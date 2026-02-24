@@ -76,6 +76,13 @@ When invoked:
 - **Ready work**: {output of `bd ready`}
 {If not a beads project: "N/A — not a beads project"}
 
+## Gemini Sessions
+{If any Gemini caches were created or used this session, include:}
+- **Display name**: {cache display name}
+- **Source file**: {path to source file on disk for recreating the cache}
+- **Contents summary**: {what's in the cache}
+{If no Gemini caches: "None this session."}
+
 ## Critical Context
 {Non-obvious things the next session MUST know:}
 - {Environment quirks, workarounds in place}

@@ -27,7 +27,6 @@
       "mcp__brave-search__brave_web_search",
       "mcp__tavily__tavily_search",
       "mcp__exa__web_search_exa",
-      "mcp__firecrawl__firecrawl_search",
       "Bash(dir:*)",
       "Bash(ls:*)",
       "Bash(find:*)",
@@ -43,7 +42,6 @@
       "Bash(powershell.exe:*)",
       "WebFetch(domain:github.com)",
       "Bash(where:*)",
-      "mcp__firecrawl__firecrawl_scrape",
       "mcp__gmail__download_attachment"
     ],
     "deny": [],
@@ -126,10 +124,12 @@
       }
     ]
   },
-  "enabledPlugins": {},
-  "autoUpdatesChannel": "latest",
   "statusLine": {
     "type": "command",
     "command": "node C:/Users/armen/.claude/statusline-command.js"
-  }
+  },
+  "enabledPlugins": {
+    "frontend-design@claude-plugins-official": true
+  },
+  "autoUpdatesChannel": "latest"
 }
